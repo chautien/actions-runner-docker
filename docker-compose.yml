@@ -1,0 +1,6 @@
+services:
+  action-runner:
+    image: action-runner-docker
+    env_file:
+      - .env
+    restart: always
