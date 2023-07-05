@@ -1,6 +1,8 @@
 services:
   action-runner:
-    image: action-runner-docker
+    image: action-runner-docker/v3
     env_file:
       - .env
+    volumes:
+      - ./_workspace:/home/docker/actions-runner/_workspace
     restart: always
