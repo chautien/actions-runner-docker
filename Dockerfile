@@ -36,6 +36,7 @@ RUN chmod +x entrypoint.sh
 USER docker
 
 # Generate SSH key để pull private repository
-RUN ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa
+RUN ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa \
+    && git config --global advice.detachedHead false
 
 ENTRYPOINT ["./entrypoint.sh"]

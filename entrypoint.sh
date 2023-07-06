@@ -8,6 +8,13 @@ LOG_GREEN="\033[32m"
 echo -e "${LOG_GREEN}You may want to set SSH key below to your Github account to pull private repo from container"
 cat /home/docker/.ssh/id_rsa.pub
 
+ssh -t -t -o StrictHostKeyChecking=accept-new git@github.com
+ssh -t -t -o StrictHostKeyChecking=accept-new admin@host01.dn01-server.gotecq.net
+ssh -t -t -o StrictHostKeyChecking=accept-new ubuntu@host02.dn01-server.gotecq.net
+
+echo $'Host develop\nHostName host01.dn01-server.gotecq.net\nUser admin' >> ~/.ssh/config
+echo $'Host staging\nHostName host02.dn01-server.gotecq.net\nUser ubuntu' >> ~/.ssh/config
+
 cd /home/docker/actions-runner
 
 # Tạo token cho action runner
@@ -21,7 +28,12 @@ cleanup() {
 }
 
 # Config runner
-./config.sh --unattended --url https://github.com/${ORGANIZATION} --token ${ACTION_RUNNER_TOKEN}
+./config.sh \
+--unattended \
+--url https://github.com/${ORGANIZATION} \
+--token ${ACTION_RUNNER_TOKEN} \
+--no-default-labels \
+--labels 'fe-runner,self-hosted,Linux,X64'
 
 # Chạy hàm cleanup để xóa runner khi stop container
 trap 'cleanup; exit 130' INT
